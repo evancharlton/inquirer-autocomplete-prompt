@@ -33,6 +33,7 @@ class AutocompletePrompt extends Base {
     this.selected = 0;
 
     // Make sure no default is set (so it won't be printed)
+    this.initialValue = this.opt.default;
     this.opt.default = null;
 
     this.paginator = new Paginator();
@@ -221,6 +222,15 @@ class AutocompletePrompt extends Base {
       self.nbChoices = choices.filter(function (choice) {
         return choice.type !== 'separator';
       }).length;
+
+      var selectedIndex = self.nbChoices.findIndex(function (choice) {
+        return (choice.value === self.initialValue);
+      });
+
+      if (selectedIndex >= 0){
+        self.selected = selectedIndex;
+      }
+
       self.searching = false;
       self.render();
     });
